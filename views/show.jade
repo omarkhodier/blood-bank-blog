@@ -1,0 +1,38 @@
+extends layout
+
+block content
+      .post
+        h1=post.title
+        p.meta Posted in 
+          a(href="/categories/show/#{post.category}") #{post.category} 
+          by #{post.author} on 30 sep 2019
+        img(src="/images/#{post.mainimage}")
+        !=post.body
+        br
+        hr
+        if post.comments
+            h3 Comment
+            each comment , i in comments
+                .comment
+                    p.comment-name #{comment.name}
+                    p.comment-body #{comment.body}
+            br
+      h3 Add comment
+      if errors
+        ul.error
+            each error,i in errors
+                li.alert.alert-danger #{error.msg}
+      form.comment-form(method='post',action='/posts/addcomment')
+        input(type="hidden" name='postid' ,value='#{post._id}')
+        .form-group
+            label Name
+            input.form-control(type='text' , name="name")
+        .form-group
+            label email
+            input.form-control(type='text' , name="email")
+        .form-group
+            label body
+            textarea.form-control(name="body")
+      br
+      input.btn.btn-primary(type="submit", value="add comment" name='submit')
+        
